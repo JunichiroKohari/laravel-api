@@ -3,7 +3,7 @@ up:
 build:
 	docker compose build --no-cache --force-rm
 laravel-install:
-	docker compose exec app composer create-project --prefer-dist laravel/laravel .
+	docker compose exec app composer create-project --prefer-dist "laravel/lumen=8.*" .
 create-project:
 	mkdir -p backend
 	@make build
@@ -22,6 +22,8 @@ install-recommend-packages:
 	docker compose exec app composer require --dev roave/security-advisories:dev-master
 	docker compose exec app php artisan vendor:publish --provider="BeyondCode\DumpServer\DumpServerServiceProvider"
 	docker compose exec app php artisan vendor:publish --provider="Barryvdh\Debugbar\ServiceProvider"
+install-xxx:
+	docker compose exec app composer require fruitcake/laravel-cors
 init:
 	docker compose up -d --build
 	docker compose exec app composer install
@@ -66,6 +68,8 @@ web:
 	docker compose exec web ash
 app:
 	docker compose exec app bash
+config:
+	docker compose exec app php artisan vendor:publish --tag="cors"
 migrate:
 	docker compose exec app php artisan migrate
 fresh:
